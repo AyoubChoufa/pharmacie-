@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" onclick="op(this,event,document.getElementById('clr'))">
+<head>
+    <!-- playbackRate -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            width: 85px;
+            aspect-ratio: 1;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+        .imgs{
+            display: flex;
+        }
+        #toggling {
+            background-color: #3497db;
+            width: fit-content;
+            padding: 12px 20px;
+            /* border-radius: 10px; */
+            outline: 2px solid #3497db;
+            outline-offset:3px;
+            caret-color: transparent;
+            cursor: pointer;
+            margin-left: 205px;
+        }
+        td{
+            border-collapse: collapse;
+            border: 2px solid #3497db;
+            padding: 10px;
+            text-align: center;
+        }
+        table tr:nth-of-type(1),table tr:nth-of-type(2){
+            background: #3497db;
+            border: 2px solid white;
+            padding: 20px ;
+        }
+        #ajouter{
+            cursor: cell}
+
+
+</style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            let ch = setInterval(ff,400)
+            function ff(){
+                if($('img').attr('src')=='pharmacy (1).png'){
+                    $('img').attr('src','pharmacy (2).png')
+                } else{
+                    $('img').attr('src','pharmacy (1).png')  }}
+                $('img').click(function(){
+                    clearInterval(ch) })
+/////////////////
+var n = 0
+        $('#ajouter').click(function(){
+            var medic = $('#medicaments option:selected').text()
+            var Q = $('#quantity')
+// cette condition pour exclus le vide et le 0 en quantité
+            if((Q.val()=='')||(Q.val()==0)){$('#quantity').css('background','#e99')}
+            else{
+                $('#quantity').css('background','')
+                switch(medic){
+                    case "Doliprane": 
+                        n += 10 * parseFloat(Q.val())
+                        break
+                    case "Prazol": 
+                        n += 50 * parseFloat(Q.val())
+                        break
+                    case "Aspro": 
+                        n += 90 * parseFloat(Q.val())
+                        break
+                    case "Acrosprim": 
+                        n += 300 * parseFloat(Q.val())
+                        break }
+                    var tr = document.createElement('tr')
+                    $('#tab').append(tr)
+                    var td1 = document.createElement('td')
+                    td1.innerText = medic
+                    tr.append(td1)
+                    var td2 = document.createElement('td')
+                    td2.innerText = Q.val()
+                    tr.append(td2)
+                $('#totale').text(n+" DH")  }})
+        var clients = $('#client')
+        var ligne = ''
+        var d = new Date()
+        var alldate = d.getFullYear()+"-"+d.getMonth()+"-"+d.getDay()+" à " +d.toLocaleTimeString()
+//////////
+            $('#confirmer').click(function(){
+                if(clients.val()!=''){
+                    ligne = ("<p style='font-size:1.5em;'>Le client <b>"+clients.val()+"</b> a payé <b >"+n+" DH  =>   </b>le "+alldate+"</p>")
+                } else {
+                    ligne = ("<p style='font-size:1.5em;'>Ce client a payé <b>"+n+" DH  =>   </b>le "+alldate+"</p>")
+                    $('#client').css('background-color','#e99')
+                }
+                var newPage =open("","_black")
+                newPage.document.write(ligne)
+                location.reload()
+            })
+
+            $('#toggling').click(function(){
+                $(this).next('table').toggle(200)
+                if($(this).text()=='Masquer Details') $(this).text('Afficher Details')
+                else $(this).text('Masquer Details')
+            })
+        })
+
+    </script>
+</head>
+<body >
+    <div class="imgs">
+        <img id="img1" onclick="doo(this)" src="pharmacy (1).png">
+        <h1 >Gestinnaire de commande </h1>
+    </div>
+    <label for="">Médicaments : </label>
+    <select  style="width:150px;" id="medicaments" onchange="">
+        <option value="dfff">Doliprane</option>
+        <option value="iiii">Prazol</option>
+        <option value="sss">Aspro</option>
+        <option value="ggg">Acrosprim</option>
+
+    </select>
+    <input type="number" value="1" id="quantity">
+    <button id="ajouter">Ajouter à la liste</button>
+<br><br><br><br>
+    <p id="toggling">Masquer Details</p>
+    <table  width="550" id="tab" cellpadding="13" cellspacing="5">
+        <tr><th colspan="2">Liste des médicaments commandés</th></tr>
+        <tr><th>Médicaments</th><th>Quantité</th></tr>
+    </table>
+    <br><br><br><br>
+    <p>Total Commande : <b id="totale">0 DH</b></p>
+    <label for="">Client : </label>
+    <input type="text" id="client">
+    <button id="confirmer" >Confirmer</button>
+
+
+</body>
+</html>
